@@ -1,0 +1,50 @@
+version: '3.8'
+
+volumes:
+  postgres:
+
+networks:
+  project:
+  web:
+    driver: bridge
+
+services:
+  caddy:
+    image: caddy:alpine
+    restart: always
+    volumes:
+      - .:/var/www/html:cached
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./docker/caddy/vhosts:/etc/caddy/vhosts
+    ports:
+      - 80:80
+    depends_on:
+      - php
+    networks:
+      - project
+      - web
+  php:
+    build:
+      context: ./docker/php
+    restart: on-failure
+    volumes:
+      - .:/var/www/html:cached
+    networks:
+      - project
+      - web
+  postgres:
+    image: postgres
+    restart: on-failure
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    networks:
+      - project
+  adminer:
+    image: adminer
+    restart: on-failure
+    networks:
+      - project
