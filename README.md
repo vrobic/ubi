@@ -34,7 +34,6 @@ La solution mise en œuvre est une API REST ouverte (sans authentification) :
 ### Installation
 
 Docker, Docker Compose et Git sont requis sur la machine hôte.
-Les ports `80` et `5432` doivent être libres.
 
 Éditer le fichier `/etc/hosts` de la machine hôte pour ajouter :
 
@@ -65,6 +64,18 @@ docker-compose exec php bin/console doctrine:migrations:migrate --no-interaction
 docker-compose exec php bin/console hautelook:fixtures:load --no-interaction
 ```
 
+L'API est désormais accessible depuis [http://ubi.loc](http://ubi.loc), et Adminer depuis [http://adminer.loc](http://adminer.loc).
+
+### Tests
+
+Les quelques tests réalisés sont uniquement fonctionnels et ont été mis en place à des fins de démonstration. Ils ne prétendent pas être exhaustifs.
+
+Ils peuvent être exécutés comme suit :
+
+```
+docker-compose exec php bin/phpunit
+```
+
 ### Utilisation de l'API
 
 Les exemples présentés permettent de répondre aux objectifs listés dans l'énoncé.
@@ -74,6 +85,8 @@ Pour accéder à la documentation exhaustive de l'API, consulter [http://ubi.loc
 #### Ajouter un élève
 
 `POST http://ubi.loc/students`
+
+Corps de la requête :
 
 ```
 {

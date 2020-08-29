@@ -1,5 +1,9 @@
 App\Entity\Student:
-  student_{1..30}:
+  student_{1..29}:
     firstName: <firstName()>
     lastName: <lastName()>
     birthDate: <dateTimeBetween('-18 years', '-6 years')>
+  student_30:
+    firstName: Barack
+    lastName: Obama
+    birthDate: <(new DateTime('1961-08-04'))>
