@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,9 +13,52 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Student.
  *
- * @ApiResource()
- *
  * @ORM\Entity
+ *
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get",
+ *         "post",
+ *         "get_average_grade"={
+ *             "method"="GET",
+ *             "route_name"="get_collection_average_grade",
+ *             "controller"=StudentController::class,
+ *             "openapi_context"={
+ *                 "summary"="Calculates the average grade for all students.",
+ *                 "parameters"={
+ *                 },
+ *                 "responses"={
+ *                     "200"={
+ *                         "description"="A float value",
+ *                     },
+ *                 },
+ *             },
+ *             "pagination_enabled"=false,
+ *         },
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put",
+ *         "patch",
+ *         "delete",
+ *         "get_average_grade"={
+ *             "method"="GET",
+ *             "route_name"="get_item_average_grade",
+ *             "controller"=StudentController::class,
+ *             "openapi_context"={
+ *                 "summary"="Calculates the average grade for a student.",
+ *                 "responses"={
+ *                     "200"={
+ *                         "description"="A float value",
+ *                     },
+ *                     "404"={
+ *                         "description"="Resource not found",
+ *                     }
+ *                 },
+ *             },
+ *         },
+ *     }
+ * )
  */
 class Student
 {
@@ -36,6 +81,8 @@ class Student
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank
+     *
+     * @ApiFilter(SearchFilter::class, strategy="ipartial")
      */
     private $firstName;
 
@@ -47,6 +94,8 @@ class Student
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank
+     *
+     * @ApiFilter(SearchFilter::class, strategy="ipartial")
      */
     private $lastName;
 

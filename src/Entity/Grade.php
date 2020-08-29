@@ -2,13 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Grade.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\GradeRepository")
+ *
+ * @ApiResource(
+ *     collectionOperations={
+ *         "post",
+ *     },
+ *     itemOperations={
+ *     },
+ * )
  */
 class Grade
 {
